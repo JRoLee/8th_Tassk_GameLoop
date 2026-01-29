@@ -200,18 +200,3 @@ void ASpartaCharacter::OnDeath()
 		SpartaGameState->OnGameOver();
 	}
 }
-
-/*
-void ASpartaCharacter::UpdateOverHeadHP()
-{
-	if (!OverHeadWidget) return;
-
-	UUserWidget* OverHeadWidgetInstace = OverHeadWidget->GetUserWidgetObject();
-	if (!OverHeadWidgetInstace) return;
-
-	if (UTextBlock* HPText = Cast<UTextBlock>(OverHeadWidgetInstace->GetWidgetFromName(TEXT("OverHeadHP"))))
-	{
-		HPText->SetText(FText::FromString(FString::Printf(TEXT("%.0f / %.0f"), Health, MaxHealth)));
-	}
-}
-*/

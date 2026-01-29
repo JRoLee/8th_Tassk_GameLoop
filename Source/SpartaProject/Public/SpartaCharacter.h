@@ -21,8 +21,6 @@ public:
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComp;
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
-	//UWidgetComponent* OverHeadWidget;
 
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealth() const;
