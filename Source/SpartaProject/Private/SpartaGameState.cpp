@@ -1,6 +1,7 @@
 ﻿#include "SpartaGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "SpartaGameInstance.h"
+#include "SpartaCharacter.h"
 #include "SpartaPlayerController.h"
 #include "SpawnVolume.h"
 #include "CoinItem.h"
@@ -135,6 +136,13 @@ void ASpartaGameState::EndLevel()
 			//AddScore(Score);
 			CurrentLevelIndex++;
 			SpartaGameInstance->CurrentLevelIndex = CurrentLevelIndex;
+			if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+			{
+				if (ASpartaCharacter* PlayerCharacter = Cast<ASpartaCharacter>(PlayerController->GetPawn()))
+				{
+					SpartaGameInstance->SavePlayerHealth(PlayerCharacter->GetHealth());
+				}
+			}
 		}
 	}
 

@@ -1,4 +1,4 @@
-#include "SpartaPlayerController.h"
+﻿#include "SpartaPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "SpartaGameInstance.h"
 #include "SpartaGameState.h"
@@ -149,6 +149,7 @@ void ASpartaPlayerController::StartGame()
 	{
 		SpartaGameInstance->CurrentLevelIndex = 0;
 		SpartaGameInstance->TotalScore = 0;
+		SpartaGameInstance->PlayerHealth = -1;
 	}
 
 	UGameplayStatics::OpenLevel(GetWorld(), FName("BasicLevel"));

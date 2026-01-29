@@ -13,4 +13,21 @@ ASpartaGameMode::ASpartaGameMode()
 
 void ASpartaGameMode::BeginPlay()
 {
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GameInstance);
+		if (SpartaGameInstance)
+		{
+			if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+			{
+				if (ASpartaCharacter* PlayerCharacter = Cast<ASpartaCharacter>(PlayerController->GetPawn()))
+				{
+					if (SpartaGameInstance->PlayerHealth > 0)
+					{
+						PlayerCharacter->ApplyHealth(SpartaGameInstance->PlayerHealth);
+					}					
+				}
+			}
+		}
+	}
 }

@@ -4,7 +4,7 @@ USpartaGameInstance::USpartaGameInstance()
 {
 	TotalScore = 0;
 	CurrentLevelIndex = 0;
-	PlayerHealth = 0;
+	PlayerHealth = -1.f;
 }
 
 void USpartaGameInstance::AddToScore(int32 Amount)
