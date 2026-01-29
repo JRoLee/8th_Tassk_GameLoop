@@ -4,6 +4,7 @@ USpartaGameInstance::USpartaGameInstance()
 {
 	TotalScore = 0;
 	CurrentLevelIndex = 0;
+	CurrentWaveIndex = 0;
 	PlayerHealth = -1.f;
 }
 

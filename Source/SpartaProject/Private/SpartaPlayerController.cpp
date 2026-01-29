@@ -139,7 +139,7 @@ void ASpartaPlayerController::ShowMainMenu(bool bIsRestart)
 						FString::Printf(TEXT("Total Score: %d"), SpartaGameInstance->TotalScore)
 					));
 				}
-			}
+			}			
 		}
 	}
 }

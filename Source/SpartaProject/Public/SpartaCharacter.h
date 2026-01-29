@@ -60,8 +60,6 @@ protected:
 	void StopSprint(const FInputActionValue& value);
 	UFUNCTION()
 	void OnDeath();
-	//void UpdateOverHeadHP();
-	
 
 private:
 	float NormalSpeed;
