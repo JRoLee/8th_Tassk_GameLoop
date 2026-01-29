@@ -82,12 +82,13 @@ void ASpartaPlayerController::ShowGameHUD()
 
 void ASpartaPlayerController::ShowMainMenu(bool bIsRestart)
 {
+	
 	if (HUDWidgetInstance)
 	{
 		HUDWidgetInstance->RemoveFromParent();
 		HUDWidgetInstance = nullptr;
 	}
-
+	
 	if (MainMenuWidgetInstance)
 	{
 		MainMenuWidgetInstance->RemoveFromParent();

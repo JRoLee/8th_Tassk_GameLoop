@@ -24,10 +24,6 @@ ASpartaCharacter::ASpartaCharacter()
 	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 	CameraComp->bUsePawnControlRotation = false;
 
-	OverHeadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverHeadWidget"));
-	OverHeadWidget->SetupAttachment(GetMesh());
-	OverHeadWidget->SetWidgetSpace(EWidgetSpace::Screen);
-
 	NormalSpeed = 600.0f;
 	SprintSpeedMultiplier = 1.7f;
 	SprintSpeed = NormalSpeed * SprintSpeedMultiplier;
@@ -43,23 +39,24 @@ float ASpartaCharacter::GetHealth() const
 	return Health;
 }
 
+float ASpartaCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
+}
+
 void ASpartaCharacter::AddHealth(float Amount)
 {
 	Health = FMath::Clamp(Health + Amount, 0.0f, MaxHealth);
-	UpdateOverHeadHP();
 }
 
 void ASpartaCharacter::ApplyHealth(float Amount)
 {
 	Health = Amount;
-	UpdateOverHeadHP();
 }
 
 void ASpartaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UpdateOverHeadHP();
-
 }
 
 void ASpartaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -129,7 +126,6 @@ float ASpartaCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	Health = FMath::Clamp(Health - DamageAmount, 0.0f, MaxHealth);
-	UpdateOverHeadHP();
 
 	if(Health<= 0.0f)
 	{
@@ -205,7 +201,7 @@ void ASpartaCharacter::OnDeath()
 	}
 }
 
-
+/*
 void ASpartaCharacter::UpdateOverHeadHP()
 {
 	if (!OverHeadWidget) return;
@@ -218,3 +214,4 @@ void ASpartaCharacter::UpdateOverHeadHP()
 		HPText->SetText(FText::FromString(FString::Printf(TEXT("%.0f / %.0f"), Health, MaxHealth)));
 	}
 }
+*/

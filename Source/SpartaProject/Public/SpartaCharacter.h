@@ -21,11 +21,13 @@ public:
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComp;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
-	UWidgetComponent* OverHeadWidget;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	//UWidgetComponent* OverHeadWidget;
 
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealth() const;
+	UFUNCTION(BlueprintPure, Category = "Health")
+	float GetMaxHealth() const;
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void AddHealth(float Amount);
 	UFUNCTION(BlueprintCallable, Category = "Health")
@@ -60,7 +62,7 @@ protected:
 	void StopSprint(const FInputActionValue& value);
 	UFUNCTION()
 	void OnDeath();
-	void UpdateOverHeadHP();
+	//void UpdateOverHeadHP();
 	
 
 private:

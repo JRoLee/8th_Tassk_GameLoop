@@ -6,7 +6,9 @@
 #include "SpawnVolume.h"
 #include "CoinItem.h"
 #include "Components/TextBlock.h"
+#include "Components/ProgressBar.h"
 #include "Blueprint/UserWidget.h"
+
 
 ASpartaGameState::ASpartaGameState()
 {
@@ -180,15 +182,15 @@ void ASpartaGameState::UpdateHUD()
 	{
 		if (ASpartaPlayerController* SpartaPlayerController = Cast<ASpartaPlayerController>(PlayerController))
 		{
-			if (UUserWidget* HUDWidet = SpartaPlayerController->GetHUDWidget())
+			if (UUserWidget* HUDWidget = SpartaPlayerController->GetHUDWidget())
 			{
-				if (UTextBlock* TimeText = Cast<UTextBlock>(HUDWidet->GetWidgetFromName(TEXT("Time"))))
+				if (UTextBlock* TimeText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Time"))))
 				{
 					float RemainingTime = GetWorldTimerManager().GetTimerRemaining(LevelTimerHandle);
 					TimeText->SetText(FText::FromString(FString::Printf(TEXT("Time: %.1f"), RemainingTime)));
 				}
 
-				if (UTextBlock* ScoreText = Cast<UTextBlock>(HUDWidet->GetWidgetFromName(TEXT("Score"))))
+				if (UTextBlock* ScoreText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Score"))))
 				{
 					if (UGameInstance* GameInstance = GetGameInstance())
 					{
@@ -199,12 +201,21 @@ void ASpartaGameState::UpdateHUD()
 						}
 					}
 				}
-				if (UTextBlock* LevelIndexText = Cast<UTextBlock>(HUDWidet->GetWidgetFromName(TEXT("Level"))))
+				if (UTextBlock* LevelIndexText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Level"))))
 				{
 					
 					LevelIndexText->SetText(FText::FromString(FString::Printf(TEXT("Level: %d"), CurrentLevelIndex+1)));
 				}
 
+				if (UProgressBar* HealthBar = Cast<UProgressBar>(HUDWidget->GetWidgetFromName(TEXT("HealthBar"))))
+				{
+					ASpartaCharacter* SpartaCharacter = Cast<ASpartaCharacter>(SpartaPlayerController->GetPawn());
+					if (!FMath::IsNearlyZero(SpartaCharacter->GetMaxHealth()))
+					{
+						float Percent = SpartaCharacter->GetHealth() / SpartaCharacter->GetMaxHealth();
+						HealthBar->SetPercent(Percent);
+					}
+				}
 			}
 		}
 	}
