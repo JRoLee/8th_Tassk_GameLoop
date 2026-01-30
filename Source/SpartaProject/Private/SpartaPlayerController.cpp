@@ -123,6 +123,23 @@ void ASpartaPlayerController::ShowMainMenu(bool bIsRestart)
 			}
 		}
 
+		if (UTextBlock* ButtonText = Cast<UTextBlock>(MainMenuWidgetInstance->GetWidgetFromName(TEXT("EndButtonText"))))
+		{
+			if (bIsRestart)
+			{
+				ButtonText->SetText(FText::FromString(TEXT("Main Menu")));
+				UFunction* PlayAnimFunc = MainMenuWidgetInstance->FindFunction(FName("PlayGameOverAnim"));
+				if (PlayAnimFunc)
+				{
+					MainMenuWidgetInstance->ProcessEvent(PlayAnimFunc, nullptr);
+				}
+			}
+			else
+			{
+				ButtonText->SetText(FText::FromString(TEXT("Quit Game")));
+			}
+		}
+
 		if (bIsRestart)
 		{
 			UFunction* PlayAnimFunc = MainMenuWidgetInstance->FindFunction(FName("PlayGameOverAnim"));
@@ -155,4 +172,23 @@ void ASpartaPlayerController::StartGame()
 
 	UGameplayStatics::OpenLevel(GetWorld(), FName("BasicLevel"));
 	SetPause(false);
+}
+
+void ASpartaPlayerController::ReturnMainMenu()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), FName("MenuLevel"));
+	SetPause(true);
+}
+
+void ASpartaPlayerController::ExitGame()
+{
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	UKismetSystemLibrary::QuitGame(
+		World,
+		this,
+		EQuitPreference::Quit,
+		false
+	);
 }
