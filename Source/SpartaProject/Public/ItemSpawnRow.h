@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "ItemSpawnRow.generated.h"
@@ -14,4 +14,6 @@ public:
 	TSubclassOf<AActor> ItemClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Spawnchance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 WaveIndex;
 };

@@ -1,4 +1,4 @@
-#include "SpawnVolume.h"
+﻿#include "SpawnVolume.h"
 #include "Components/BoxComponent.h"
 #include "Engine/World.h"
 
@@ -29,9 +29,9 @@ FVector ASpawnVolume::GetRandomPointInVolume() const
 	);
 }
 
-AActor* ASpawnVolume::SpawnRandomItem()
+AActor* ASpawnVolume::SpawnRandomItem(int32 CurrentWaveIndex)
 {
-	if(FItemSpawnRow* SelectedRow = GetRandomItem())
+	if(FItemSpawnRow* SelectedRow = GetRandomItem(CurrentWaveIndex))
 	{
 		if (UClass* ActualClass = SelectedRow->ItemClass.Get())
 		{
@@ -42,7 +42,7 @@ AActor* ASpawnVolume::SpawnRandomItem()
 	return nullptr;
 }
 
-FItemSpawnRow* ASpawnVolume::GetRandomItem() const
+FItemSpawnRow* ASpawnVolume::GetRandomItem(int32 CurrentWaveIndex) const
 {
 	if (!ItemDataTable) return nullptr;
 	
@@ -56,7 +56,7 @@ FItemSpawnRow* ASpawnVolume::GetRandomItem() const
 	float TotalChance = 0.0f;
 	for (const FItemSpawnRow* Row : AllRows)
 	{
-		if(Row)
+		if(Row && Row->WaveIndex == CurrentWaveIndex)
 		{
 			TotalChance += Row->Spawnchance;
 		}
@@ -67,10 +67,13 @@ FItemSpawnRow* ASpawnVolume::GetRandomItem() const
 
 	for (FItemSpawnRow* Row : AllRows)
 	{
-		AccumulatedChance += Row->Spawnchance;
-		if (RandValue <= AccumulatedChance)
+		if (Row && Row->WaveIndex == CurrentWaveIndex)
 		{
-			return Row;
+			AccumulatedChance += Row->Spawnchance;
+			if (RandValue <= AccumulatedChance)
+			{
+				return Row;
+			}
 		}
 	}
 

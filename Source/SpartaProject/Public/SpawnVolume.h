@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "ItemSpawnRow.h"
@@ -24,9 +24,9 @@ public:
 	UDataTable* ItemDataTable;
 
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	AActor* SpawnRandomItem();
+	AActor* SpawnRandomItem(int32 CurrentWaveIndex);
 
-	FItemSpawnRow* GetRandomItem() const;
+	FItemSpawnRow* GetRandomItem(int32 CurrentWaveIndex) const;
 	AActor* SpawnItem(TSubclassOf<AActor> ItemClass);
 	FVector GetRandomPointInVolume() const;
 	

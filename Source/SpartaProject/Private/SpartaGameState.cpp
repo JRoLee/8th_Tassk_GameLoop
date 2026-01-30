@@ -85,7 +85,7 @@ void ASpartaGameState::StartLevel()
 				ASpawnVolume* SpawnVolume = Cast<ASpawnVolume>(FoundVolumes[0]);
 				if (SpawnVolume)
 				{
-					AActor* SpawnedActor = SpawnVolume->SpawnRandomItem();
+					AActor* SpawnedActor = SpawnVolume->SpawnRandomItem(CurrentWaveIndex);
 					if (SpawnedActor && SpawnedActor->IsA(ACoinItem::StaticClass()))
 					{
 						SpawnedCoinCount++;
