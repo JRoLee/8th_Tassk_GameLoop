@@ -25,6 +25,7 @@ void ABaseItem::OnItemOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 {
 	if(OtherActor && OtherActor->ActorHasTag(TEXT("Player")))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Overlap!!!")));
 		ActivateItem(OtherActor);
 	}
 }

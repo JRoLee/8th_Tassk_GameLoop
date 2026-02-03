@@ -15,9 +15,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debuff")
 	float DebuffDuration;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Anim")
-	UAnimMontage* AnimMontage;
-
 	virtual void ActivateItem(AActor* Activator) override;
 
 protected:

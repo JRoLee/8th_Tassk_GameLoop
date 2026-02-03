@@ -5,13 +5,13 @@
 #include "SpartaGameState.h"
 #include "SpartaCharacter.h"
 
+
 ASpartaRandomItem::ASpartaRandomItem()
 {
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SKeletalMesh"));
 	SkeletalMesh->SetupAttachment(Collision);
 
 	DebuffDuration = 5;
-	AnimMontage = nullptr;
 }
 
 void ASpartaRandomItem::ActivateItem(AActor* Activator)
@@ -22,6 +22,7 @@ void ASpartaRandomItem::ActivateItem(AActor* Activator)
 	{
 		SpartaGameState->UpdateHUD();
 	}
+	
 	int32 RandNum = FMath::RandRange(0, 2);
 	
 	

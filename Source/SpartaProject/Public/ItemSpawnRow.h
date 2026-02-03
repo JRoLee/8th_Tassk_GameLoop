@@ -9,11 +9,12 @@ struct FItemSpawnRow : public FTableRowBase
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 WaveIndex;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ItemName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor> ItemClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Spawnchance;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 WaveIndex;
+	
 };
