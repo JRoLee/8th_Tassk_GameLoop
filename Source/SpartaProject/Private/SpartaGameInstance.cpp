@@ -39,7 +39,7 @@ void USpartaGameInstance::PlayBGM(int32 SoundIndex)
             CurrentBGMComponent->Stop();
         }
 
-        CurrentBGMComponent = UGameplayStatics::CreateSound2D(this, NewBGM, 0.7f, 1.f, 0.f, nullptr, true, true);
+        CurrentBGMComponent = UGameplayStatics::CreateSound2D(this, NewBGM, 0.5f, 1.f, 0.f, nullptr, true, true);
         if (CurrentBGMComponent)
         {
             CurrentSoundIndex = SoundIndex;
