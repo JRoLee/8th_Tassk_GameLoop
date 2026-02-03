@@ -36,7 +36,6 @@ void ASpartaRandomItem::ActivateItem(AActor* Activator)
 				if (ASpartaGameState* GameState = World->GetGameState<ASpartaGameState>())
 				{
 					GameState->AddScore(150);
-					GameState->OnCoinCollected();
 				}
 			}
 			DestroyItem();
