@@ -31,6 +31,8 @@ public:
 	int32 MaxWaves;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
 	TArray<FName> LevelMapNames;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	TArray<USoundBase*> BGMs;
 
 	FTimerHandle LevelTimerHandle;
 	FTimerHandle HUDUpdateTimerHandle;
@@ -43,6 +45,8 @@ public:
 	void AddScore(int32 Amount);
 	UFUNCTION(BlueprintCallable, Category = "Level")
 	void OnGameOver();
+	UFUNCTION(BlueprintCallable, Category = "Sound")
+	void PlayBGM();
 	
 	void StartLevel();
 	void OnLevelTimeUp();

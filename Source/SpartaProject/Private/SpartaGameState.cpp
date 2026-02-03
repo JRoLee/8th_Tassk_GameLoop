@@ -25,8 +25,9 @@ void ASpartaGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
+	PlayBGM();
 	StartLevel();
-
+	
 	GetWorldTimerManager().SetTimer(
 		HUDUpdateTimerHandle,
 		this,
@@ -186,6 +187,8 @@ void ASpartaGameState::OnGameOver()
 	}
 }
 
+
+
 void ASpartaGameState::UpdateHUD()
 {
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
@@ -238,8 +241,13 @@ void ASpartaGameState::UpdateHUD()
 					{
 						if (!GetWorldTimerManager().IsTimerActive(DebuffTimerHandle))
 						{
-							GetWorldTimerManager().SetTimer(DebuffTimerHandle, this,
-								&ASpartaGameState::RefreshDebuffProgressBar, 0.05f, true);
+							GetWorldTimerManager().SetTimer(
+								DebuffTimerHandle,
+								this,
+								&ASpartaGameState::RefreshDebuffProgressBar,
+								0.05f,
+								true
+							);
 						}
 					}
 				}
@@ -253,18 +261,17 @@ void ASpartaGameState::RefreshDebuffProgressBar()
 	ASpartaPlayerController* PlayerController = Cast<ASpartaPlayerController>(GetWorld()->GetFirstPlayerController());
 	if (!PlayerController) return;
 	UUserWidget* HUD = PlayerController->GetHUDWidget();
-	ASpartaCharacter* Char = Cast<ASpartaCharacter>(PlayerController->GetPawn());
-	if (!HUD || !Char) return;
+	ASpartaCharacter* SpartaCharacter = Cast<ASpartaCharacter>(PlayerController->GetPawn());
+	if (!HUD || !SpartaCharacter) return;
 
 	bool bAnyDebuffActive = false;
 
-	// --- 1. Slow Debuff 처리 ---
 	if (UProgressBar* SlowBar = Cast<UProgressBar>(HUD->GetWidgetFromName(TEXT("SlowDebuffBar"))))
 	{
-		if (Char->bIsSlowDebuffOn)
+		if (SpartaCharacter->bIsSlowDebuffOn)
 		{
-			float Remaining = GetWorldTimerManager().GetTimerRemaining(Char->SlowDebuffTimerHandle);
-			float Percent = (Char->AppliedSlowDebuffDuration > 0) ? (Remaining / Char->AppliedSlowDebuffDuration) : 0.0f;
+			float Remaining = GetWorldTimerManager().GetTimerRemaining(SpartaCharacter->SlowDebuffTimerHandle);
+			float Percent = (SpartaCharacter->AppliedSlowDebuffDuration > 0) ? (Remaining / SpartaCharacter->AppliedSlowDebuffDuration) : 0.0f;
 			SlowBar->SetPercent(Percent);
 			SlowBar->SetVisibility(ESlateVisibility::Visible);
 			bAnyDebuffActive = true;
@@ -275,13 +282,12 @@ void ASpartaGameState::RefreshDebuffProgressBar()
 		}
 	}
 
-	// --- 2. Rotate Debuff 처리 ---
 	if (UProgressBar* RotateBar = Cast<UProgressBar>(HUD->GetWidgetFromName(TEXT("RotateDebuffBar"))))
 	{
-		if (Char->bIsRotateDebuffOn)
+		if (SpartaCharacter->bIsRotateDebuffOn)
 		{
-			float Remaining = GetWorldTimerManager().GetTimerRemaining(Char->RotateDebuffTimerHandle);
-			float Percent = (Char->AppliedRotateDebuffDuration > 0) ? (Remaining / Char->AppliedRotateDebuffDuration) : 0.0f;
+			float Remaining = GetWorldTimerManager().GetTimerRemaining(SpartaCharacter->RotateDebuffTimerHandle);
+			float Percent = (SpartaCharacter->AppliedRotateDebuffDuration > 0) ? (Remaining / SpartaCharacter->AppliedRotateDebuffDuration) : 0.0f;
 			RotateBar->SetPercent(Percent);
 			RotateBar->SetVisibility(ESlateVisibility::Visible);
 			bAnyDebuffActive = true;
@@ -298,4 +304,23 @@ void ASpartaGameState::RefreshDebuffProgressBar()
 		GetWorldTimerManager().ClearTimer(DebuffTimerHandle);
 	}
 	
+}
+
+void ASpartaGameState::PlayBGM()
+{
+	FString CurrentMapName = GetWorld()->GetMapName();
+	if (CurrentMapName.Contains("MenuLevel"))
+	{
+		if (BGMs[0])
+		{
+			UGameplayStatics::PlaySound2D(GetWorld(), BGMs[0]);
+		}
+	}
+	else
+	{
+		if (BGMs[1])
+		{
+			UGameplayStatics::PlaySound2D(GetWorld(), BGMs[1]);
+		}
+	}
 }
