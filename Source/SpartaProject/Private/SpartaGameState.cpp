@@ -25,7 +25,6 @@ void ASpartaGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayBGM();
 	StartLevel();
 	
 	GetWorldTimerManager().SetTimer(
@@ -53,6 +52,8 @@ void ASpartaGameState::AddScore(int32 Amount)
 
 void ASpartaGameState::StartLevel()
 {
+	PlayBGM();
+
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		if (ASpartaPlayerController* SpartaPlayerController = Cast<ASpartaPlayerController>(PlayerController))
@@ -308,19 +309,18 @@ void ASpartaGameState::RefreshDebuffProgressBar()
 
 void ASpartaGameState::PlayBGM()
 {
-	FString CurrentMapName = GetWorld()->GetMapName();
-	if (CurrentMapName.Contains("MenuLevel"))
+	USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GetGameInstance());
+	if (SpartaGameInstance)
 	{
-		if (BGMs[0])
+		FString CurrentMapName = GetWorld()->GetMapName();
+
+		if (CurrentMapName.Contains("MenuLevel"))
 		{
-			UGameplayStatics::PlaySound2D(GetWorld(), BGMs[0]);
+			SpartaGameInstance->PlayBGM(0);
 		}
-	}
-	else
-	{
-		if (BGMs[1])
+		else
 		{
-			UGameplayStatics::PlaySound2D(GetWorld(), BGMs[1]);
+			SpartaGameInstance->PlayBGM(1);
 		}
 	}
 }

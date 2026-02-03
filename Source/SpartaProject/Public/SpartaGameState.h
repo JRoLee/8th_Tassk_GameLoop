@@ -31,8 +31,6 @@ public:
 	int32 MaxWaves;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
 	TArray<FName> LevelMapNames;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
-	TArray<USoundBase*> BGMs;
 
 	FTimerHandle LevelTimerHandle;
 	FTimerHandle HUDUpdateTimerHandle;
