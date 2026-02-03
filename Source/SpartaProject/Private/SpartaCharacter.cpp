@@ -30,6 +30,12 @@ ASpartaCharacter::ASpartaCharacter()
 
 	GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
 
+	bIsSlowDebuffOn = false;
+	bIsRotateDebuffOn = false;
+
+	AppliedSlowDebuffDuration = 0;
+	AppliedRotateDebuffDuration = 0;
+
 	MaxHealth = 100.0f;
 	Health = MaxHealth;
 }
@@ -199,4 +205,66 @@ void ASpartaCharacter::OnDeath()
 	{
 		SpartaGameState->OnGameOver();
 	}
+}
+
+
+void ASpartaCharacter::ApplySlowDebuff(float Duration)
+{
+	AppliedSlowDebuffDuration = Duration;
+	if (bIsSlowDebuffOn)
+	{
+		GetWorldTimerManager().ClearTimer(SlowDebuffTimerHandle);
+	}
+	else
+	{
+		bIsSlowDebuffOn = true;
+		NormalSpeed *= 0.5f;
+		SprintSpeed *= 0.5f;
+
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(
+		SlowDebuffTimerHandle,
+		this,
+		&ASpartaCharacter::ResetSlowDebuff,
+		Duration,
+		false
+	);
+}
+
+void ASpartaCharacter::ResetSlowDebuff()
+{
+	bIsSlowDebuffOn = false;
+	AppliedSlowDebuffDuration = 0;
+	NormalSpeed *= 2.0f;
+	SprintSpeed *= 2.0f;
+}
+
+void ASpartaCharacter::ApplyRotateCameraDebuff(float Duration)
+{
+	AppliedRotateDebuffDuration = Duration;
+	if (bIsRotateDebuffOn)
+	{
+		GetWorldTimerManager().ClearTimer(RotateDebuffTimerHandle);
+	}
+	else
+	{
+		bIsRotateDebuffOn = true;
+		CameraComp->SetRelativeRotation(FRotator(0.0f, 0.0f, 180.0f));
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(
+		RotateDebuffTimerHandle,
+		this,
+		&ASpartaCharacter::ResetRotateCameraDebuff,
+		Duration,
+		false
+	);
+}
+
+void ASpartaCharacter::ResetRotateCameraDebuff()
+{
+	bIsRotateDebuffOn = false;
+	AppliedRotateDebuffDuration = 0;
+	CameraComp->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 }

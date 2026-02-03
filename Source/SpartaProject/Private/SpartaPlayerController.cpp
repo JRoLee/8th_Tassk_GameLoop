@@ -5,6 +5,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 ASpartaPlayerController::ASpartaPlayerController()
 	: InputMappingContext(nullptr),
@@ -104,6 +105,18 @@ void ASpartaPlayerController::ShowMainMenu(bool bIsRestart)
 
 			bShowMouseCursor = true;
 			SetInputMode(FInputModeUIOnly());
+		}
+
+		if (UImage* MenuImage = Cast<UImage>(MainMenuWidgetInstance->GetWidgetFromName(TEXT("MainMenuImage"))))
+		{
+			if(bIsRestart)
+			{
+				MenuImage->SetVisibility(ESlateVisibility::Hidden);
+			}
+			else
+			{
+				MenuImage->SetVisibility(ESlateVisibility::Visible);
+			}
 		}
 
 		if (UTextBlock* ButtonText = Cast<UTextBlock>(MainMenuWidgetInstance->GetWidgetFromName(TEXT("StartButtonText"))))

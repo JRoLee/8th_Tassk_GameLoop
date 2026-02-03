@@ -22,6 +22,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debuff")
+	bool bIsSlowDebuffOn;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debuff")
+	bool bIsRotateDebuffOn;
+
+	float AppliedSlowDebuffDuration;
+	float AppliedRotateDebuffDuration;
+
+	FTimerHandle SlowDebuffTimerHandle;
+	FTimerHandle RotateDebuffTimerHandle;
+
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealth() const;
 	UFUNCTION(BlueprintPure, Category = "Health")
@@ -30,6 +41,15 @@ public:
 	void AddHealth(float Amount);
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void ApplyHealth(float Amount);
+
+	UFUNCTION()
+	void ApplySlowDebuff(float Duration);
+	UFUNCTION()
+	void ResetSlowDebuff();
+	UFUNCTION()
+	void ApplyRotateCameraDebuff(float Duration);
+	UFUNCTION()
+	void ResetRotateCameraDebuff();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")

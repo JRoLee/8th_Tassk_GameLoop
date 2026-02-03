@@ -14,10 +14,7 @@ public:
 	ASpartaGameState();
 
 	virtual void BeginPlay() override;
-	/*
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Score")
-	int32 Score;
-	*/
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Coin")
 	int32 SpawnedCoinCount;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Coin")
@@ -37,7 +34,11 @@ public:
 
 	FTimerHandle LevelTimerHandle;
 	FTimerHandle HUDUpdateTimerHandle;
-	
+	FTimerHandle DebuffTimerHandle;
+
+	UFUNCTION()
+	void RefreshDebuffProgressBar();
+
 	UFUNCTION(BlueprintCallable, Category = "Score")
 	void AddScore(int32 Amount);
 	UFUNCTION(BlueprintCallable, Category = "Level")

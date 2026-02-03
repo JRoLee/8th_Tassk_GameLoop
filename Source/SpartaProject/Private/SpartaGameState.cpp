@@ -36,6 +36,8 @@ void ASpartaGameState::BeginPlay()
 	);
 }
 
+
+
 void ASpartaGameState::AddScore(int32 Amount)
 {
 	if (UGameInstance* GameInstance = GetGameInstance())
@@ -230,7 +232,70 @@ void ASpartaGameState::UpdateHUD()
 						HealthBar->SetPercent(Percent);
 					}
 				}
+				if (ASpartaCharacter* SpartaCharacter = Cast<ASpartaCharacter>(SpartaPlayerController->GetPawn()))
+				{
+					if (SpartaCharacter && (SpartaCharacter->bIsSlowDebuffOn || SpartaCharacter->bIsRotateDebuffOn))
+					{
+						if (!GetWorldTimerManager().IsTimerActive(DebuffTimerHandle))
+						{
+							GetWorldTimerManager().SetTimer(DebuffTimerHandle, this,
+								&ASpartaGameState::RefreshDebuffProgressBar, 0.05f, true);
+						}
+					}
+				}
 			}
 		}
 	}
+}
+
+void ASpartaGameState::RefreshDebuffProgressBar()
+{
+	ASpartaPlayerController* PlayerController = Cast<ASpartaPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController) return;
+	UUserWidget* HUD = PlayerController->GetHUDWidget();
+	ASpartaCharacter* Char = Cast<ASpartaCharacter>(PlayerController->GetPawn());
+	if (!HUD || !Char) return;
+
+	bool bAnyDebuffActive = false;
+
+	// --- 1. Slow Debuff 처리 ---
+	if (UProgressBar* SlowBar = Cast<UProgressBar>(HUD->GetWidgetFromName(TEXT("SlowDebuffBar"))))
+	{
+		if (Char->bIsSlowDebuffOn)
+		{
+			float Remaining = GetWorldTimerManager().GetTimerRemaining(Char->SlowDebuffTimerHandle);
+			float Percent = (Char->AppliedSlowDebuffDuration > 0) ? (Remaining / Char->AppliedSlowDebuffDuration) : 0.0f;
+			SlowBar->SetPercent(Percent);
+			SlowBar->SetVisibility(ESlateVisibility::Visible);
+			bAnyDebuffActive = true;
+		}
+		else
+		{
+			SlowBar->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+
+	// --- 2. Rotate Debuff 처리 ---
+	if (UProgressBar* RotateBar = Cast<UProgressBar>(HUD->GetWidgetFromName(TEXT("RotateDebuffBar"))))
+	{
+		if (Char->bIsRotateDebuffOn)
+		{
+			float Remaining = GetWorldTimerManager().GetTimerRemaining(Char->RotateDebuffTimerHandle);
+			float Percent = (Char->AppliedRotateDebuffDuration > 0) ? (Remaining / Char->AppliedRotateDebuffDuration) : 0.0f;
+			RotateBar->SetPercent(Percent);
+			RotateBar->SetVisibility(ESlateVisibility::Visible);
+			bAnyDebuffActive = true;
+		}
+		else
+		{
+			RotateBar->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+
+	// 만약 두 디버프 모두 꺼졌다면 타이머 중지
+	if (!bAnyDebuffActive)
+	{
+		GetWorldTimerManager().ClearTimer(DebuffTimerHandle);
+	}
+	
 }
